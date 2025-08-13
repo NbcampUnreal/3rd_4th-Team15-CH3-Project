@@ -13,7 +13,7 @@ AGunBase::AGunBase()
     bIsReloading = false;
     bCanFire = true;
     CurrentAmmo = 0;
-    RemainingAmmo = 100;
+    RemainingAmmo = 30;
 }
 
 FVector AGunBase::GetAimDirection() const
@@ -89,10 +89,6 @@ void AGunBase::BeginPlay()
 
 void AGunBase::FireBullet()
 {
-    if (!WeaponDataAsset || bIsReloading || !bCanFire)
-    {
-        return;
-    }
     if (CurrentAmmo <= 0 && bCanFire)
     {
         bCanFire = false;
@@ -106,9 +102,24 @@ void AGunBase::FireBullet()
         return;
     }
     
+    if (!WeaponDataAsset || bIsReloading || !bCanFire)
+    {
+        return;
+    }
 
     CurrentAmmo--;
     bCanFire = false;
+
+    if (GEngine)
+    {
+        FString AmmoText = FString::Printf(TEXT("남은 장전된 탄약 : %d"), CurrentAmmo);
+        GEngine->AddOnScreenDebugMessage(
+            -1,              // Key (-1이면 새 메시지)
+            5.0f,            // 표시 시간(초)
+            FColor::Green,   // 색상
+            AmmoText         // 표시할 문자열
+        );
+    }
 
     PlayEffects();
     SpawnBullet();
@@ -153,6 +164,17 @@ void AGunBase::FinishReload()
     RemainingAmmo -= ReloadAmount;
     bIsReloading = false;
     bCanFire = true;
+
+    if (GEngine)
+    {
+        FString AmmoText = FString::Printf(TEXT("탄약 : %d / %d"), CurrentAmmo, RemainingAmmo);
+        GEngine->AddOnScreenDebugMessage(
+            -1,              // Key (-1이면 새 메시지)
+            5.0f,            // 표시 시간(초)
+            FColor::Green,   // 색상
+            AmmoText         // 표시할 문자열
+        );
+    }
 }
 
 void AGunBase::SpawnBullet()

@@ -20,6 +20,12 @@ AProjectileBullet::AProjectileBullet()
 	BulletMesh->SetCollisionResponseToAllChannels(ECR_Block); // 모든 것과 Block
 	BulletMesh->BodyInstance.bUseCCD = true; // 고속 충돌 보정 (관통 방지)
 
+	// 자기 채널 설정 (Projectile)
+	BulletMesh->SetCollisionObjectType(ECC_GameTraceChannel1);
+
+	// 모든 Projectile 채널은 무시
+	BulletMesh->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
+	
 	// 움직일 수 있다 알려주는
 	BulletMesh->SetMobility(EComponentMobility::Movable);
 

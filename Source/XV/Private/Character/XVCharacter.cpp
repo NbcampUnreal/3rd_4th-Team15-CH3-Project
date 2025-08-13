@@ -852,8 +852,8 @@ void AXVCharacter::ItemInteract(const FInputActionValue& Value)
 		return;
 	}
 	InteractionComp->HandleItemInteract();
-	CurrentItem = Cast<AInteractableItem>(InteractionComp->GetActor());
-	UE_LOG(LogTemp, Warning, TEXT("CurrentItem : %s"), *CurrentItem->GetName());
+	//CurrentItem = Cast<AInteractableItem>(InteractionComp->GetActor());
+	//UE_LOG(LogTemp, Warning, TEXT("CurrentItem : %s"), *CurrentItem->GetName());
 }
 
 void AXVCharacter::UseItem(const FInputActionValue& Value)
